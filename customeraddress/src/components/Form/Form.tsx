@@ -1,25 +1,28 @@
 import React, {useState} from "react";
 import { TextField,Button,Typography ,Paper } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { createCustomers } from "../../actions/customers";
+import { createCustomers } from "../../state/action-creator/customer";
+import ICustomer from "../../types/ICustomer";
 
-const Form = () =>{
+const Form = ({setCurrentId}) =>{
 
-    const [customerData,setCustomerData] = useState({
-        firstName : '',lastName:'',address:'',city:'',state:'',country:'',zipCode:'' });
+    const [customerData,setCustomerData] = useState({} as ICustomer);
     const dispatch = useDispatch();
+
+    const clear = () => {
+        setCustomerData({} as ICustomer);
+    };
 
     const handleSubmit = (e) => {
 
         e.preventDefault();
         console.log(customerData);
         dispatch(createCustomers(customerData));;
-
+        setCurrentId(null);
+        clear();
     };
 
-    const clear = () => {
-
-    };
+    
     
     return(
         <Paper>
@@ -75,7 +78,7 @@ const Form = () =>{
             value={customerData.zipCode}
             onChange={(e) => setCustomerData({...customerData, zipCode : e.target.value})}
             />
-            <Button variant="container" color="primary" size="large" type="submit" onSubmit = {clear}>+</Button>
+            <Button variant="contained" color="primary" size="large" type="submit" onSubmit = {clear}>+</Button>
             </form>
 
         </Paper>
